@@ -33,5 +33,9 @@ export const useAnecdotes = () => {
     anecdoteService.createNew(anecdote).then(a => setAnecdotes(as => as.concat(a)))
   }
 
-  return { anecdotes, addAnecdote }
+  const deleteAnecdote = (id) => {
+    anecdoteService.deleteOld(id).then(() => setAnecdotes(as => as.filter(a => a.id !== id)))
+  }
+
+  return { anecdotes, addAnecdote, deleteAnecdote }
 }
