@@ -9,11 +9,12 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import ErrorBoundary from './components/ErrorBoundary'
 import { FakeButton, Navigation } from './components/Styled'
+import { useNotificationActions } from './store'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState('')
+  const { setNotification } = useNotificationActions()
   const navigate = useNavigate()
   const match = useMatch('/blogs/:id')
 
@@ -135,7 +136,7 @@ const App = () => {
         )}
       </Navigation>
       <ErrorBoundary>
-        <Notification text={notification} />
+        <Notification />
         <Routes>
           <Route path="/" element={<Blogs blogs={blogs} />} />
           <Route
