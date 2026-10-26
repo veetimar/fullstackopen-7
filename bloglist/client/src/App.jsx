@@ -126,7 +126,8 @@ const App = () => {
           <Route path='/' element={<Blogs blogs={blogs} />} />
           <Route path='create' element={<BlogForm createBlog={HandleBlogCreation} />} />
           <Route path='/login' element={<Login login={handleLogin} />} />
-          <Route path='/blogs/:id' element={<Blog blog={blog} like={likeBlog} remove={deleteBlog} user={user} />} />
+          {blog && <Route path='/blogs/:id' element={<Blog blog={blog} like={likeBlog} remove={deleteBlog} user={user} />} />}
+          <Route path='*' element={<h2>404 - Page not found</h2>} />
         </Routes>
       </ErrorBoundary>
     </div>
