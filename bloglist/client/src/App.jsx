@@ -14,7 +14,7 @@ import { useNotificationActions, useBlogs, useBlogActions } from './store'
 const App = () => {
   const [user, setUser] = useState(null)
   const { setNotification } = useNotificationActions()
-  const { initialize, add } = useBlogActions()
+  const { initialize, add, like, remove } = useBlogActions()
   const blogs = useBlogs()
   const navigate = useNavigate()
   const match = useMatch('/blogs/:id')
@@ -64,34 +64,21 @@ const App = () => {
     navigate('/')
   }
 
-  const likeBlog = async (blogToUpdate) => {
-    const newBlog = {
-      user: blogToUpdate.user.id,
-      likes: blogToUpdate.likes + 1,
-      author: blogToUpdate.author,
-      title: blogToUpdate.title,
-      url: blogToUpdate.url,
-    }
-    const returnedBlog = await blogService.update(newBlog, blogToUpdate.id)
-    let newBlogs = blogs.map((blog) =>
-      blog.id === blogToUpdate.id ? returnedBlog : blog
-    )
-    setBlogs(sortBlogs(newBlogs))
+  const likeBlog = async (blog) => {
+    like(blog.id)
   }
 
   const deleteBlog = async (blog) => {
     if (!confirm(`Remove blog ${blog.title}?`)) {
       return
     }
-    const id = blog.id
     try {
-      await blogService.remove(id)
+      await remove(blog.id)
     } catch {
       setNotification('Blog deletion failed')
       setTimeout(() => setNotification(''), 5000)
       return
     }
-    setBlogs(blogs.filter((b) => b.id !== id))
     setNotification('Deleted blog')
     setTimeout(() => setNotification(''), 5000)
     navigate('/')

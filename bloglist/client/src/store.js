@@ -18,7 +18,7 @@ const sortBlogs = (blogs) => {
   return blogs.toSorted((a, b) => b.likes - a.likes)
 }
 
-const useBlogStore = create((set) => ({
+const useBlogStore = create((set, get) => ({
   blogs: [],
   actions: {
     initialize: () => {
@@ -27,6 +27,21 @@ const useBlogStore = create((set) => ({
     add: async (blog) => {
       const newBlog = await blogService.create(blog)
       set((state) => ({ blogs: state.blogs.concat(newBlog) }))
+    },
+    like: async (id) => {
+      const blog = get().blogs.find((b) => b.id === id)
+      const newBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id }
+      const response = await blogService.update(newBlog)
+      set((state) => ({
+        blogs: state.blogs.map((b) => (b.id === id ? response : b)),
+      }))
+    },
+    remove: (id) => {
+      return blogService
+        .remove(id)
+        .then(
+          set((state) => ({ blogs: state.blogs.filter((b) => b.id !== id) }))
+        )
     },
   },
 }))
