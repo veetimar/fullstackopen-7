@@ -1,23 +1,36 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, Input } from './Styled'
+import { useNotificationActions, useBlogActions } from '../store'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const { notify } = useNotificationActions()
+  const { add } = useBlogActions()
+  const navigate = useNavigate()
 
-  const handleCreateSubmit = (event) => {
+  const createBlog = async (event) => {
     event.preventDefault()
+    const newBlog = { title, author, url }
     setTitle('')
     setAuthor('')
     setUrl('')
-    createBlog({ title, author, url })
+    try {
+      await add(newBlog)
+    } catch {
+      notify('Blog creation failed')
+      return
+    }
+    notify('Created blog ' + newBlog.title)
+    navigate('/')
   }
 
   return (
     <div>
       <h2>Create new</h2>
-      <form onSubmit={handleCreateSubmit}>
+      <form onSubmit={createBlog}>
         <div>
           <label>
             title

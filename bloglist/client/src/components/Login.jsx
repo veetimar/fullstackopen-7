@@ -1,15 +1,28 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, Input } from './Styled'
+import { useNotificationActions, useUserActions } from '../store'
 
-const Login = ({ login }) => {
+const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { login } = useUserActions()
+  const { notify } = useNotificationActions()
+  const navigate = useNavigate()
 
-  const handleLoginSubmit = (event) => {
+  const handleLoginSubmit = async (event) => {
     event.preventDefault()
+    const credentials = { username, password }
     setUsername('')
     setPassword('')
-    login(username, password)
+    try {
+      await login(credentials)
+    } catch {
+      notify('Wrong login credentials')
+      return
+    }
+    notify('Login succesful')
+    navigate('/')
   }
 
   return (

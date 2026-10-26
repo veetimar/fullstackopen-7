@@ -1,10 +1,16 @@
 import { create } from 'zustand'
 import blogService from './services/blogs'
+import userService from './services/user'
 
 const useNotificationStore = create((set) => ({
   content: '',
   actions: {
-    setNotification: (value) => set({ content: value }),
+    notify: (value) => {
+      set({ content: value })
+      setTimeout(() => {
+        set({ content: '' })
+      }, 5000)
+    },
   },
 }))
 
@@ -49,3 +55,32 @@ const useBlogStore = create((set, get) => ({
 export const useBlogs = () => sortBlogs(useBlogStore((state) => state.blogs))
 
 export const useBlogActions = () => useBlogStore((state) => state.actions)
+
+const useUserStore = create((set) => ({
+  user: null,
+  actions: {
+    initialize: () => {
+      let user = window.localStorage.getItem('user')
+      if (user) {
+        user = JSON.parse(user)
+        set(() => ({ user }))
+        blogService.setToken(user.token)
+      }
+    },
+    login: async (credentials) => {
+      const user = await userService.login(credentials)
+      set(() => ({ user }))
+      window.localStorage.setItem('user', JSON.stringify(user))
+      blogService.setToken(user.token)
+    },
+    logout: () => {
+      set(() => ({ user: null }))
+      window.localStorage.removeItem('user')
+      blogService.setToken('')
+    },
+  },
+}))
+
+export const useUser = () => useUserStore((state) => state.user)
+
+export const useUserActions = () => useUserStore((state) => state.actions)
