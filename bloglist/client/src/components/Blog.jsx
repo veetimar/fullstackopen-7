@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { Unit, Button } from './Styled'
-import { useNotificationActions, useBlogActions, useUser } from '../store'
+import { useNotificationActions, useBlogActions, useLogin } from '../store'
 
 const Blog = ({ blog }) => {
-  const user = useUser()
+  const user = useLogin()
   const { notify } = useNotificationActions()
   const { like, remove } = useBlogActions()
   const navigate = useNavigate()

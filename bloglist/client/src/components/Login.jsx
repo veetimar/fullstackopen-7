@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input } from './Styled'
-import { useNotificationActions, useUserActions } from '../store'
+import { useNotificationActions, useLoginActions } from '../store'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const { login } = useUserActions()
+  const { login } = useLoginActions()
   const { notify } = useNotificationActions()
   const navigate = useNavigate()
 

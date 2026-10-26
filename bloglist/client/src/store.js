@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import blogService from './services/blogs'
-import userService from './services/user'
+import loginService from './services/login'
+import userService from './services/users'
 
 const useNotificationStore = create((set) => ({
   content: '',
@@ -56,7 +57,7 @@ export const useBlogs = () => sortBlogs(useBlogStore((state) => state.blogs))
 
 export const useBlogActions = () => useBlogStore((state) => state.actions)
 
-const useUserStore = create((set) => ({
+const useLoginStore = create((set) => ({
   user: null,
   actions: {
     initialize: () => {
@@ -68,7 +69,7 @@ const useUserStore = create((set) => ({
       }
     },
     login: async (credentials) => {
-      const user = await userService.login(credentials)
+      const user = await loginService.login(credentials)
       set(() => ({ user }))
       window.localStorage.setItem('user', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -81,6 +82,19 @@ const useUserStore = create((set) => ({
   },
 }))
 
-export const useUser = () => useUserStore((state) => state.user)
+export const useLogin = () => useLoginStore((state) => state.user)
+
+export const useLoginActions = () => useLoginStore((state) => state.actions)
+
+const useUserStore = create((set) => ({
+  users: [],
+  actions: {
+    initialize: () => {
+      userService.getAll().then((users) => set(() => ({ users })))
+    },
+  },
+}))
+
+export const useUsers = () => useUserStore((state) => state.users)
 
 export const useUserActions = () => useUserStore((state) => state.actions)

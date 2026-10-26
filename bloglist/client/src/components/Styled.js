@@ -54,3 +54,7 @@ export const Unit = styled.div`
   border-style: solid;
   border-radius: 5px;
 `
+
+export const TableHeader = styled.th`
+  padding: 0 7em 0 0;
+`
