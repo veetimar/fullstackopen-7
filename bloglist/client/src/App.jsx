@@ -7,6 +7,7 @@ import Blogs from './components/Blogs'
 import Login from './components/Login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import ErrorBoundary from './components/ErrorBoundary'
 import { FakeButton, Navigation } from './components/Styled'
 
 const App = () => {
@@ -119,13 +120,15 @@ const App = () => {
         {!user && <Link to='/login' style={margin}>login</Link>}
         {user && <FakeButton onClick={handleLogout} style={margin}>logout</FakeButton>}
       </Navigation>
-      <Notification text={notification}/>
-      <Routes>
-        <Route path='/' element={<Blogs blogs={blogs} />} />
-        <Route path='create' element={<BlogForm createBlog={HandleBlogCreation} />} />
-        <Route path='/login' element={<Login login={handleLogin} />} />
-        <Route path='/blogs/:id' element={<Blog blog={blog} like={likeBlog} remove={deleteBlog} user={user} />} />
-      </Routes>
+      <ErrorBoundary>
+        <Notification text={notification}/>
+        <Routes>
+          <Route path='/' element={<Blogs blogs={blogs} />} />
+          <Route path='create' element={<BlogForm createBlog={HandleBlogCreation} />} />
+          <Route path='/login' element={<Login login={handleLogin} />} />
+          <Route path='/blogs/:id' element={<Blog blog={blog} like={likeBlog} remove={deleteBlog} user={user} />} />
+        </Routes>
+      </ErrorBoundary>
     </div>
   )
 }
