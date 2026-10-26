@@ -5,7 +5,11 @@ const Blogs = ({ blogs }) => {
     <div className="blogs">
       <h2>Blogs</h2>
       <ul>
-        {blogs.map(blog => <li key={blog.id}><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></li>)}
+        {blogs.map((blog) => (
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
+        ))}
       </ul>
     </div>
   )

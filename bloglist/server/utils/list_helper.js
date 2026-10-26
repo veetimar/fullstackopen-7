@@ -33,7 +33,7 @@ const mostBlogs = (blogs) => {
     numberOfBlogs[author] += 1
   }
 
-  let maxauthor = ""
+  let maxauthor = ''
   let maxblog = 0
   for (let author in numberOfBlogs) {
     if (numberOfBlogs[author] > maxblog) {
@@ -58,7 +58,7 @@ const mostLikes = (blogs) => {
     likes[author] += blog.likes
   }
 
-  let maxauthor = ""
+  let maxauthor = ''
   let maxlikes = 0
   for (let author in likes) {
     if (likes[author] > maxlikes) {
@@ -74,5 +74,5 @@ module.exports = {
   totalLikes,
   favouriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
 }

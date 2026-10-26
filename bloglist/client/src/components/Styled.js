@@ -25,7 +25,7 @@ export const FakeButton = styled.button`
 export const Input = styled.input`
   margin: 0.2em 0.2em;
   padding: 0.1em 0.2em;
-  width: 100px;  
+  width: 100px;
 `
 
 export const Navigation = styled.div`
@@ -52,5 +52,5 @@ export const Unit = styled.div`
   padding: 0 1em 1em;
   border: 2px solid blue;
   border-style: solid;
-  border-radius: 5px
+  border-radius: 5px;
 `

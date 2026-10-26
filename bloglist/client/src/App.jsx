@@ -18,7 +18,7 @@ const App = () => {
   const match = useMatch('/blogs/:id')
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(sortBlogs(blogs)))
+    blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)))
   }, [])
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const App = () => {
     }
   }, [])
 
-  const blog = match ? blogs.find(b => b.id === match.params.id) : null
+  const blog = match ? blogs.find((b) => b.id === match.params.id) : null
 
   const sortBlogs = (blogs) => {
     return blogs.toSorted((a, b) => b.likes - a.likes)
@@ -74,14 +74,16 @@ const App = () => {
       likes: blogToUpdate.likes + 1,
       author: blogToUpdate.author,
       title: blogToUpdate.title,
-      url: blogToUpdate.url
+      url: blogToUpdate.url,
     }
     const returnedBlog = await blogService.update(newBlog, blogToUpdate.id)
-    let newBlogs = blogs.map(blog => blog.id === blogToUpdate.id ? returnedBlog : blog)
+    let newBlogs = blogs.map((blog) =>
+      blog.id === blogToUpdate.id ? returnedBlog : blog
+    )
     setBlogs(sortBlogs(newBlogs))
   }
 
-  const deleteBlog = async blog => {
+  const deleteBlog = async (blog) => {
     if (!confirm(`Remove blog ${blog.title}?`)) {
       return
     }
@@ -93,7 +95,7 @@ const App = () => {
       setTimeout(() => setNotification(''), 5000)
       return
     }
-    setBlogs(blogs.filter(b => b.id !== id))
+    setBlogs(blogs.filter((b) => b.id !== id))
     setNotification('Deleted blog')
     setTimeout(() => setNotification(''), 5000)
     navigate('/')
@@ -109,25 +111,52 @@ const App = () => {
   }
 
   const margin = {
-    margin: 5
+    margin: 5,
   }
 
   return (
     <div>
       <Navigation>
-        <Link to='/' style={margin}>home</Link>
-        <Link to='/create' style={margin}>new blog</Link>
-        {!user && <Link to='/login' style={margin}>login</Link>}
-        {user && <FakeButton onClick={handleLogout} style={margin}>logout</FakeButton>}
+        <Link to="/" style={margin}>
+          home
+        </Link>
+        <Link to="/create" style={margin}>
+          new blog
+        </Link>
+        {!user && (
+          <Link to="/login" style={margin}>
+            login
+          </Link>
+        )}
+        {user && (
+          <FakeButton onClick={handleLogout} style={margin}>
+            logout
+          </FakeButton>
+        )}
       </Navigation>
       <ErrorBoundary>
-        <Notification text={notification}/>
+        <Notification text={notification} />
         <Routes>
-          <Route path='/' element={<Blogs blogs={blogs} />} />
-          <Route path='create' element={<BlogForm createBlog={HandleBlogCreation} />} />
-          <Route path='/login' element={<Login login={handleLogin} />} />
-          {blog && <Route path='/blogs/:id' element={<Blog blog={blog} like={likeBlog} remove={deleteBlog} user={user} />} />}
-          <Route path='*' element={<h2>404 - Page not found</h2>} />
+          <Route path="/" element={<Blogs blogs={blogs} />} />
+          <Route
+            path="create"
+            element={<BlogForm createBlog={HandleBlogCreation} />}
+          />
+          <Route path="/login" element={<Login login={handleLogin} />} />
+          {blog && (
+            <Route
+              path="/blogs/:id"
+              element={
+                <Blog
+                  blog={blog}
+                  like={likeBlog}
+                  remove={deleteBlog}
+                  user={user}
+                />
+              }
+            />
+          )}
+          <Route path="*" element={<h2>404 - Page not found</h2>} />
         </Routes>
       </ErrorBoundary>
     </div>

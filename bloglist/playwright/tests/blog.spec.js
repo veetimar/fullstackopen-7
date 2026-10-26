@@ -13,14 +13,20 @@ describe('Blog app', () => {
       await login(page, 'testing', 'salaisuus')
       await expect(page.getByText('Blogs')).toBeVisible()
       await expect(page.getByRole('button', { name: 'logout' })).toBeVisible()
-      await expect(page.locator('.notification')).toContainText('Login succesful')
+      await expect(page.locator('.notification')).toContainText(
+        'Login succesful'
+      )
     })
 
     test('fails with wrong credentials', async ({ page }) => {
       await login(page, 'testing', 'väärä')
       await expect(page.getByText('Blogs')).not.toBeVisible()
-      await expect(page.getByRole('button', { name: 'logout' })).not.toBeVisible()
-      await expect(page.locator('.notification')).toContainText('Wrong login credentials')
+      await expect(
+        page.getByRole('button', { name: 'logout' })
+      ).not.toBeVisible()
+      await expect(page.locator('.notification')).toContainText(
+        'Wrong login credentials'
+      )
     })
   })
 
@@ -37,8 +43,18 @@ describe('Blog app', () => {
     describe('and a few blogs are created', () => {
       beforeEach(async ({ page }) => {
         await createBlog(page, 'otsikko', 'tekijä', 'osoite')
-        await createBlog(page, 'toinen otsikko', 'toinen tekijä', 'toinen osoite')
-        await createBlog(page, 'kolmas otsikko', 'kolmas tekijä', 'kolmas osoite')
+        await createBlog(
+          page,
+          'toinen otsikko',
+          'toinen tekijä',
+          'toinen osoite'
+        )
+        await createBlog(
+          page,
+          'kolmas otsikko',
+          'kolmas tekijä',
+          'kolmas osoite'
+        )
       })
 
       test('blogs can be liked', async ({ page }) => {
@@ -51,10 +67,12 @@ describe('Blog app', () => {
 
       test('blog can be deleted', async ({ page }) => {
         await page.getByText('toinen otsikko', { exact: true }).click()
-        page.on('dialog', dialog => dialog.accept())
+        page.on('dialog', (dialog) => dialog.accept())
         await page.getByRole('button', { name: 'remove' }).click()
         await expect(page.getByText('Blogs')).toBeVisible()
-        await expect(page.getByText('toinen otsikko', { exact: true })).not.toBeVisible()
+        await expect(
+          page.getByText('toinen otsikko', { exact: true })
+        ).not.toBeVisible()
       })
     })
   })

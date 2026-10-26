@@ -14,7 +14,7 @@ const blog = {
   author: 'Michael Chan',
   url: 'https://reactpatterns.com/',
   likes: 7,
-  user: blogUser
+  user: blogUser,
 }
 
 test('blog renders correctly when not authenticated', () => {

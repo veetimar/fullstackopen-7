@@ -7,19 +7,22 @@ const Blog = ({ blog, like, remove, user }) => {
 
   return (
     <Unit className="blog">
-      <h3>{blog.author}: {blog.title}</h3>
+      <h3>
+        {blog.author}: {blog.title}
+      </h3>
       <div>
         <div>
           <a href={blog.url}>{blog.url}</a>
         </div>
         <div>
-          likes {blog.likes} {user && <Button onClick={() => like(blog)}>like</Button>}
+          likes {blog.likes}{' '}
+          {user && <Button onClick={() => like(blog)}>like</Button>}
         </div>
+        <div>Added by {blog.user.name}</div>
         <div>
-          Added by {blog.user.name}
-        </div>
-        <div>
-          {user && (user.username === blog.user.username) && <Button onClick={() => remove(blog)}>remove</Button>}
+          {user && user.username === blog.user.username && (
+            <Button onClick={() => remove(blog)}>remove</Button>
+          )}
         </div>
       </div>
     </Unit>
