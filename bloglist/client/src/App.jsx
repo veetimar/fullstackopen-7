@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { Route, Routes, Link, useNavigate, useMatch } from 'react-router-dom'
+import { Route, Routes, Link, useNavigate } from 'react-router-dom'
 import Blog from './components/Blog'
 import Blogs from './components/Blogs'
+import User from './components/User'
 import Users from './components/Users'
 import Login from './components/Login'
 import BlogForm from './components/BlogForm'
@@ -13,7 +14,6 @@ import {
   useUserActions,
   useBlogActions,
   useLoginActions,
-  useBlogs,
   useLogin,
 } from './store'
 
@@ -22,18 +22,14 @@ const App = () => {
   const { initialize: initBlogs } = useBlogActions()
   const { initialize: initLogin, logout } = useLoginActions()
   const { initialize: initUsers } = useUserActions()
-  const blogs = useBlogs()
   const user = useLogin()
   const navigate = useNavigate()
-  const match = useMatch('/blogs/:id')
 
   useEffect(() => {
     initBlogs()
     initLogin()
     initUsers()
   }, [initBlogs, initLogin, initUsers])
-
-  const blog = match ? blogs.find((b) => b.id === match.params.id) : null
 
   const handleLogout = () => {
     logout()
@@ -75,7 +71,8 @@ const App = () => {
           <Route path="/users" element={<Users />} />
           <Route path="create" element={<BlogForm />} />
           <Route path="/login" element={<Login />} />
-          {blog && <Route path="/blogs/:id" element={<Blog blog={blog} />} />}
+          <Route path="/blogs/:id" element={<Blog />} />
+          <Route path="/users/:id" element={<User />} />
           <Route path="*" element={<h2>404 - Page not found</h2>} />
         </Routes>
       </ErrorBoundary>

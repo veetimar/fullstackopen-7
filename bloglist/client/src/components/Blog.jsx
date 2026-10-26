@@ -1,15 +1,24 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useMatch } from 'react-router-dom'
 import { Unit, Button } from './Styled'
-import { useNotificationActions, useBlogActions, useLogin } from '../store'
+import {
+  useNotificationActions,
+  useBlogActions,
+  useLogin,
+  useBlogs,
+} from '../store'
 
-const Blog = ({ blog }) => {
+const Blog = () => {
   const user = useLogin()
   const { notify } = useNotificationActions()
   const { like, remove } = useBlogActions()
+  const blogs = useBlogs()
+  const match = useMatch('/blogs/:id')
   const navigate = useNavigate()
 
+  const blog = blogs.find((u) => u.id === match.params.id)
+
   if (!blog) {
-    return null
+    return <h2>404 - Page not found</h2>
   }
 
   const likeBlog = async (blog) => {
