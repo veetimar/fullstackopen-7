@@ -9,18 +9,19 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import ErrorBoundary from './components/ErrorBoundary'
 import { FakeButton, Navigation } from './components/Styled'
-import { useNotificationActions } from './store'
+import { useNotificationActions, useBlogs, useBlogActions } from './store'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const { setNotification } = useNotificationActions()
+  const { initialize, add } = useBlogActions()
+  const blogs = useBlogs()
   const navigate = useNavigate()
   const match = useMatch('/blogs/:id')
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(sortBlogs(blogs)))
-  }, [])
+    initialize()
+  }, [initialize])
 
   useEffect(() => {
     let user = window.localStorage.getItem('user')
@@ -32,10 +33,6 @@ const App = () => {
   }, [])
 
   const blog = match ? blogs.find((b) => b.id === match.params.id) : null
-
-  const sortBlogs = (blogs) => {
-    return blogs.toSorted((a, b) => b.likes - a.likes)
-  }
 
   const handleLogin = async (username, password) => {
     let user
@@ -55,16 +52,14 @@ const App = () => {
   }
 
   const HandleBlogCreation = async (newBlog) => {
-    let blog
     try {
-      blog = await blogService.create(newBlog)
+      await add(newBlog)
     } catch {
       setNotification('Blog creation failed')
       setTimeout(() => setNotification(''), 5000)
       return
     }
-    setBlogs(blogs.concat(blog))
-    setNotification('Created blog ' + blog.title)
+    setNotification('Created blog ' + newBlog.title)
     setTimeout(() => setNotification(''), 5000)
     navigate('/')
   }
