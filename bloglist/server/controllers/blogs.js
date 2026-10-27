@@ -9,8 +9,12 @@ router.get('/', async (request, response) => {
 
 router.post('/', userExtractor, async (request, response) => {
   const user = request.user
-  const blog = new Blog({ ...request.body, user: user._id })
 
+  if (!user) {
+    return response.status(401).json({ error: 'unauthorized' })
+  }
+
+  const blog = new Blog({ ...request.body, user: user._id })
   const savedBlog = await blog.save()
   await savedBlog.populate('user', { name: 1, username: 1 })
   user.blogs = user.blogs.concat(savedBlog._id)
@@ -48,15 +52,41 @@ router.put('/:id', userExtractor, async (request, response) => {
     return response.status(401).json({ error: 'unauthorized' })
   }
 
-  const { title, author, url, likes, user: requestUser } = request.body
+  const {
+    title,
+    author,
+    url,
+    likes,
+    user: requestUser,
+    comments,
+  } = request.body
   blog.title = title
   blog.author = author
   blog.url = url
   blog.likes = likes
   blog.user = requestUser
+  blog.comments = comments
   const updatedBlog = await blog.save()
   await updatedBlog.populate('user', { name: 1, username: 1 })
   response.json(updatedBlog)
+})
+
+router.post('/:id/comments', userExtractor, async (request, response) => {
+  const user = request.user
+  const { body: comment } = request.body
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    return response.status(404).end()
+  }
+
+  if (!user) {
+    return response.status(401).json({ error: 'unauthorized' })
+  }
+
+  blog.comments.push(comment)
+  await blog.save()
+  response.json({ body: comment })
 })
 
 module.exports = router

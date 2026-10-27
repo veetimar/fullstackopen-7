@@ -37,3 +37,12 @@ Content-Type: application/json
   "username": "jergons",
   "password": "Jaakon salaisuus"
 }
+
+###
+POST http://localhost:3003/api/blogs/id/comments
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "body": "This is a test comment"
+}

@@ -59,6 +59,12 @@ const Blog = () => {
           )}
         </div>
       </div>
+      <h4>Comments</h4>
+      <ul>
+        {blog.comments.map((c) => (
+          <li>{c}</li>
+        ))}
+      </ul>
     </Unit>
   )
 }
