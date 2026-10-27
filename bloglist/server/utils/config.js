@@ -1,9 +1,9 @@
 require('dotenv').config()
 
 const PORT = process.env.PORT || 3001
-const MONGOURL =
+const MONGOURI =
   process.env.NODE_ENV === 'test'
-    ? process.env.TEST_MONGOURL
-    : process.env.MONGOURL
+    ? process.env.TEST_MONGOURI
+    : process.env.MONGOURI
 
-module.exports = { PORT, MONGOURL }
+module.exports = { PORT, MONGOURI }
