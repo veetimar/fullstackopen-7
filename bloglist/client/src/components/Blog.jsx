@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { useNavigate, useMatch } from 'react-router-dom'
-import { Unit, Button } from './Styled'
+import { Unit, Button, Input } from './Styled'
 import {
   useNotificationActions,
   useBlogActions,
@@ -8,9 +9,10 @@ import {
 } from '../store'
 
 const Blog = () => {
+  const [comment, setComment] = useState('')
   const user = useLogin()
   const { notify } = useNotificationActions()
-  const { like, remove } = useBlogActions()
+  const { like, remove, addComment } = useBlogActions()
   const blogs = useBlogs()
   const match = useMatch('/blogs/:id')
   const navigate = useNavigate()
@@ -39,6 +41,19 @@ const Blog = () => {
     navigate('/')
   }
 
+  const createComment = async (e) => {
+    e.preventDefault()
+
+    try {
+      await addComment(blog.id, comment)
+    } catch {
+      notify('Comment creation failed')
+      return
+    }
+    setComment('')
+    notify('Commented')
+  }
+
   return (
     <Unit className="blog">
       <h3>
@@ -59,12 +74,22 @@ const Blog = () => {
           )}
         </div>
       </div>
-      <h4>Comments</h4>
-      <ul>
-        {blog.comments.map((c) => (
-          <li>{c}</li>
-        ))}
-      </ul>
+      <div>
+        <h4>Comments</h4>
+        <form onSubmit={createComment}>
+          <Input
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="add a comment"
+          />
+          <Button>add comment</Button>
+        </form>
+        <ul>
+          {blog.comments.map((c, index) => (
+            <li key={index}>{c}</li>
+          ))}
+        </ul>
+      </div>
     </Unit>
   )
 }

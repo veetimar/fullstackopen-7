@@ -85,8 +85,9 @@ router.post('/:id/comments', userExtractor, async (request, response) => {
   }
 
   blog.comments.push(comment)
-  await blog.save()
-  response.json({ body: comment })
+  const updatedBlog = await blog.save()
+  await updatedBlog.populate('user', { name: 1, username: 1 })
+  response.json(updatedBlog)
 })
 
 module.exports = router

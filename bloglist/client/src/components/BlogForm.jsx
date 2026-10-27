@@ -14,15 +14,15 @@ const BlogForm = () => {
   const createBlog = async (event) => {
     event.preventDefault()
     const newBlog = { title, author, url }
-    setTitle('')
-    setAuthor('')
-    setUrl('')
     try {
       await add(newBlog)
     } catch {
       notify('Blog creation failed')
       return
     }
+    setTitle('')
+    setAuthor('')
+    setUrl('')
     notify('Created blog ' + newBlog.title)
     navigate('/')
   }
