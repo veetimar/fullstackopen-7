@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useMatch } from 'react-router-dom'
-import { Unit, Button, Input } from './Styled'
+import { Unit, InnerUnit, Button, Input, List } from './Styled'
 import {
   useNotificationActions,
   useBlogActions,
@@ -74,7 +74,7 @@ const Blog = () => {
           )}
         </div>
       </div>
-      <div>
+      <InnerUnit className="comments">
         <h4>Comments</h4>
         <form onSubmit={createComment}>
           <Input
@@ -84,12 +84,12 @@ const Blog = () => {
           />
           <Button>add comment</Button>
         </form>
-        <ul>
+        <List>
           {blog.comments.map((c, index) => (
             <li key={index}>{c}</li>
           ))}
-        </ul>
-      </div>
+        </List>
+      </InnerUnit>
     </Unit>
   )
 }

@@ -47,7 +47,7 @@ export const Alert = styled.div`
 `
 
 export const Unit = styled.div`
-  background: lightskyblue;
+  background: skyblue;
   margin: 1em 0;
   padding: 0 1em 1em;
   border: 2px solid blue;
@@ -55,6 +55,28 @@ export const Unit = styled.div`
   border-radius: 5px;
 `
 
+export const InnerUnit = styled.div`
+  background: deepskyblue;
+  margin: 0.5em 0 0;
+  padding: 0 0.5em 0;
+  border: 2px solid blue;
+  border-style: solid;
+  border-radius: 5px;
+`
+
 export const TableHeader = styled.th`
   padding: 0 7em 0 0;
+`
+
+export const List = styled.ul`
+  margin 1em 0em
+  padding: 0 2em;
+  border-left-style: solid;
+  border-radius: 3px;
+`
+
+export const Table = styled.table`
+  padding: 1em;
+  border-style: double;
+  border-radius: 5px;
 `

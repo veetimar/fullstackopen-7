@@ -1,5 +1,5 @@
 import { useMatch } from 'react-router-dom'
-import { Unit } from './Styled'
+import { Unit, InnerUnit, List } from './Styled'
 import { useUsers } from '../store'
 
 const User = () => {
@@ -15,12 +15,14 @@ const User = () => {
   return (
     <Unit className="user">
       <h2>{user.name}</h2>
-      <h3>Added blogs</h3>
-      <ul>
-        {user.blogs.map((b) => (
-          <li key={b.id}>{b.title}</li>
-        ))}
-      </ul>
+      <InnerUnit className="blogs">
+        <h3>Added blogs</h3>
+        <List>
+          {user.blogs.map((b) => (
+            <li key={b.id}>{b.title}</li>
+          ))}
+        </List>
+      </InnerUnit>
     </Unit>
   )
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useUsers } from '../store'
-import { TableHeader } from './Styled'
+import { TableHeader, Table } from './Styled'
 
 const Users = () => {
   const users = useUsers()
@@ -8,7 +8,7 @@ const Users = () => {
   return (
     <div>
       <h2>Users</h2>
-      <table>
+      <Table>
         <thead>
           <tr>
             <TableHeader>Name</TableHeader>
@@ -25,7 +25,7 @@ const Users = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
