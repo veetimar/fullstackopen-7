@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import userService from './services/users'
+import { getUser, saveUser, removeUser } from './services/persistentUser'
 
 const useNotificationStore = create((set) => ({
   content: '',
@@ -67,9 +68,8 @@ const useLoginStore = create((set) => ({
   user: null,
   actions: {
     initialize: () => {
-      let user = window.localStorage.getItem('user')
+      const user = getUser()
       if (user) {
-        user = JSON.parse(user)
         set(() => ({ user }))
         blogService.setToken(user.token)
       }
@@ -77,12 +77,12 @@ const useLoginStore = create((set) => ({
     login: async (credentials) => {
       const user = await loginService.login(credentials)
       set(() => ({ user }))
-      window.localStorage.setItem('user', JSON.stringify(user))
+      saveUser(user)
       blogService.setToken(user.token)
     },
     logout: () => {
       set(() => ({ user: null }))
-      window.localStorage.removeItem('user')
+      removeUser()
       blogService.setToken('')
     },
   },

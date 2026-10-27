@@ -45,10 +45,10 @@ const App = () => {
     <div>
       <Navigation>
         <Link to="/" style={margin}>
-          Blogs
+          blogs
         </Link>
         <Link to="/users" style={margin}>
-          Users
+          users
         </Link>
         <Link to="/create" style={margin}>
           new blog
